@@ -1,4 +1,5 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
+# shellcheck shell=bash
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
 load '../libs/helpers'
@@ -15,6 +16,7 @@ setup_script="setup.sh"
 @test ".have_git returns false if git not found or executable" {
   #shellcheck source=../setup.sh
   . ${setup_script}
+  # shellcheck disable=2030,2031
   export GITLOC="stub-git-not-executable"
   run have_git
   assert_failure
@@ -23,6 +25,7 @@ setup_script="setup.sh"
 @test ".run_main bails if git is not available" {
   #shellcheck source=../setup.sh
   . ${setup_script}
+  # shellcheck disable=2030,2031
   export GITLOC="stub-git-not-executable"
   run run_main
   assert_failure

@@ -1,4 +1,5 @@
 #!/usr/bin/env ./test/libs/bats/bin/bats
+# shellcheck shell=bash
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
 load '../libs/helpers'
