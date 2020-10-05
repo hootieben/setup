@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 is_executable(){
   local CMD="${1}"
   if hash "$CMD" 2>/dev/null; then
