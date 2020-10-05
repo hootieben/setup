@@ -2,12 +2,11 @@
 #set -e
 #set -u
 set -o pipefail
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-echo "$DIR"
 . './libs/helpers.bash'
 
 GITLOC=""
+DELTAVER="0.4.3"
+ARCH=""
 while getopts ':g:' OPTION; do
   case "$OPTION" in
     g)
@@ -19,8 +18,6 @@ while getopts ':g:' OPTION; do
   esac
 done
 
-#shift $((OPTIND -1))
-
 have_git(){
   if [ -z "${GITLOC}" ]; then
     GITLOC="git"
@@ -30,10 +27,27 @@ have_git(){
   is_executable "${GITLOC}"
 }
 
+delta_version(){
+   return "$(delta -V | awk '{print $2}')"
+}
+
+get_arch(){
+  ARCH="$(arch)"
+}
+
+delta_install(){
+  if ! is_executable delta; then
+    echo "Delta not found. Attempting to install ..."
+    wget -qO- "https://github.com/dandavison/delta/releases/download/${DELTAVER}/delta-${DELTAVER}-$ARCH-unknown-linux-gnu.tar.gz" | tar xvz -C ~/.local/bin "delta-${DELTAVER}-${ARCH}-unknown-linux-gnu/delta --strip-components=1"
+  fi
+}
+
 run_main() {
   if ! have_git $GITLOC; then
     echo "Git not found or executable. Bailing ..."
     exit 1
+  get_arch
+  delta_install
   fi
 }
 
