@@ -3,17 +3,17 @@ load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
 load '../libs/helpers'
 
-setup_script="setup.sh"
+setup_script="bin/setup"
 
 @test ".have_git returns true if git found and executable" {
-  #shellcheck source=../setup.sh
+  #shellcheck source=../bin/setup
   . ${setup_script}
   run have_git
   assert_success
 }
 
 @test ".have_git returns false if git not found or executable" {
-  #shellcheck source=../setup.sh
+  #shellcheck source=../bin/setup
   . ${setup_script}
   # shellcheck disable=2030,2031
   export GITLOC="stub-git-not-executable"
@@ -32,7 +32,7 @@ setup_script="setup.sh"
 }
 
 @test ".run_main calls have_git" {
-  #shellcheck source=../setup.sh
+  #shellcheck source=../bin/setup
   . ${setup_script}
   function have_git() { echo "have_git called"; }
   export -f have_git
