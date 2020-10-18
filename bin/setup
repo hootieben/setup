@@ -2,9 +2,13 @@
 #set -e
 #set -u
 set -o pipefail
-. './libs/helpers.bash'
 
-GITLOC=""
+SCRIPT=$(realpath "${BASH_SOURCE[0]}")
+SCRIPTPATH=$(dirname "$SCRIPT")
+#shellcheck source=../libs/helpers.sh
+source "${SCRIPTPATH}/../libs/helpers.sh"
+
+GITLOC="${1:-git}"
 DELTAVER="0.4.3"
 ARCH=""
 while getopts ':g:' OPTION; do
@@ -19,12 +23,9 @@ while getopts ':g:' OPTION; do
 done
 
 have_git(){
-  if [ -z "${GITLOC}" ]; then
-    GITLOC="git"
-  else
-    GITLOC="${GITLOC}"
+  if ! is_executable "$GITLOC"; then
+    return 1
   fi
-  is_executable "${GITLOC}"
 }
 
 delta_version(){
@@ -43,12 +44,14 @@ delta_install(){
 }
 
 run_main() {
-  if ! have_git $GITLOC; then
+  if ! have_git "${GITLOC}"; then
     echo "Git not found or executable. Bailing ..."
     exit 1
-  get_arch
-  delta_install
   fi
+  get_arch
+  echo "$ARCH"
+    #delta_install
+  #fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
