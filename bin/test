@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+SCRIPT=$(realpath "${BASH_SOURCE[0]}")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
+"${SCRIPTPATH}/../test/libs/bats/bin/bats" "${SCRIPTPATH}/../test"
