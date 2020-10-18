@@ -1,7 +1,7 @@
 
 load 'libs/bats-support/load'
 load 'libs/bats-assert/load'
-load '../libs/helpers'
+load '../libs/helpers.sh'
 
 setup_script="bin/setup"
 
