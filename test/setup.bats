@@ -21,16 +21,6 @@ setup_script="bin/setup"
   assert_failure
 }
 
-@test ".run_main bails if git is not available" {
-  #shellcheck source=../setup.sh
-  . ${setup_script}
-  # shellcheck disable=2030,2031
-  export GITLOC="stub-git-not-executable"
-  run run_main
-  assert_failure
-  assert_output -p "Git not found or executable"
-}
-
 @test ".run_main calls have_git" {
   #shellcheck source=../bin/setup
   . ${setup_script}
@@ -39,4 +29,14 @@ setup_script="bin/setup"
   run run_main
   assert_success
   assert_output -p "have_git called"
+}
+
+@test ".run_main bails if git is not available" {
+  #shellcheck source=../bin/setup
+  . ${setup_script}
+  # shellcheck disable=2030,2031
+  export GITLOC="stub-git-not-executable"
+  run run_main
+  assert_failure
+  assert_output -p "Git not found or executable"
 }
